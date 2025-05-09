@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -21,7 +20,6 @@ export function ImageCarousel({
   const thumbnailsRef = useRef<HTMLDivElement>(null);
   const [showScrollButtons, setShowScrollButtons] = useState(false);
   const thumbnailWidth = 88; // 80px width + 8px margin (space-x-2)
-  const [isScrollable, setIsScrollable] = useState(false);
 
   // Check if scrolling is needed
   useEffect(() => {
@@ -30,7 +28,6 @@ export function ImageCarousel({
         const { scrollWidth, clientWidth } = thumbnailsRef.current;
         const scrollable = scrollWidth > clientWidth;
         setShowScrollButtons(scrollable);
-        setIsScrollable(scrollable);
       }
     };
 

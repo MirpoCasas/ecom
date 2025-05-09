@@ -4,7 +4,7 @@ import { Product, ProductsResponse } from "@/types/products";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useParams, useRouter, usePathname } from "next/navigation";
 import {
   Button,
   Dropdown,
@@ -20,14 +20,19 @@ import ItemCard from "@/components/features/Items/ItemCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+type Params = {
+  category: string;
+  search: string;
+};
+
 export default function AllPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useParams<Params>();
 
   // Get search params
-  const currentCategory = searchParams.get("category") || "";
-  const currentSearch = searchParams.get("search") || "";
+  const currentCategory = searchParams.category
+  const currentSearch = searchParams.search
 
   // Local state for user inputs
   const [searchInput, setSearchInput] = useState<string>(currentSearch);

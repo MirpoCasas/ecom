@@ -13,7 +13,7 @@ export default function CartPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
         <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
         <p className="text-gray-600 mb-8">
-          Looks like you haven't added any products to your cart yet.
+          Looks like you have not added any products to your cart yet.
         </p>
         <Link href="/all">
           <Button color="primary" variant="flat">

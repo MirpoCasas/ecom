@@ -1,9 +1,7 @@
 "use client";
 
-import ItemCard from "@/components/features/Items/ItemCard";
-import ItemCarouselle from "@/components/features/Items/ItemCarouselle";
 import HomeCarouselle from "@/components/layout/HomeCarouselle";
-import { Product, ProductsResponse } from "@/types/products";
+import { ProductsResponse } from "@/types/products";
 import { useEffect } from "react";
 import useSWR from "swr";
 

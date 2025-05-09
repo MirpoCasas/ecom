@@ -39,9 +39,6 @@ export const apiCall = async <T>(
   const requestBody = options?.body ?? undefined;
   const headers = options?.headers ?? setDefaultHeaders();
   
-  const log = `[API] [${method.toUpperCase()}] ${url}`;
-  // console.debug(log);
-  
   try {
     // Convert body to JSON string if needed
     let processedBody = requestBody;
