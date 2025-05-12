@@ -43,14 +43,14 @@ export default function ItemCard({ product, showAddToCart = true }: ItemCardProp
 
   return (
     <a href={`/item/${id}`} className="block">
-      <Card className="min-w-64 w-full shadow-lg rounded-lg p-4 m-0 border-2 border-gray-200 h-full transition-shadow hover:shadow-xl">
+      <Card className="min-w-64 w-full max-w-64 shadow-lg rounded-lg p-4 m-0 border-2 border-gray-200 h-full transition-shadow hover:shadow-xl">
         <CardBody className="p-0">
           <div className="flex flex-col">
             <div className="relative w-full h-48 mb-4">
               <img
                 src={thumbnail || "https://via.placeholder.com/300x200"}
                 alt={title}
-                className="w-full h-full object-cover rounded-md"
+                className="w-auto h-full object-cover rounded-md"
               />
               {discountPercentage > 0 && (
                 <span className="absolute top-2 right-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded">

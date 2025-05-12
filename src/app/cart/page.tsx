@@ -3,7 +3,7 @@ import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import CheckoutItem from "@/components/features/checkout/CheckoutItem";
-import CheckoutSummary from "@/components/layout/CheckoutSummary";
+import CartSummary from "@/components/layout/CartSummary";
 
 export default function CartPage() {
   const { items, totalItems, totalPrice, clearCart } = useCartStore();
@@ -55,7 +55,7 @@ export default function CartPage() {
         </div>
 
         {/* Order Summary */}
-        <CheckoutSummary totalPrice={totalPrice} />
+        <CartSummary totalPrice={totalPrice} />
       </div>
     </div>
   );

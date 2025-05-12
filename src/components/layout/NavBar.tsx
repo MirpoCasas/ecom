@@ -25,10 +25,6 @@ export default function NavBar() {
   const pathname = usePathname();
   const { totalItems } = useCartStore();
 
-  useEffect(() => {
-    console.log("Pathname changed:", pathname);
-  }, [pathname]);
-
   const menuItems = ["All Products", "Contact"];
 
   return (
@@ -40,7 +36,7 @@ export default function NavBar() {
         />
         <NavbarBrand className="hidden md:flex">
           <NextLink href="/" passHref>
-            <p className="font-bold text-inherit cursor-pointer">
+            <p className="font-bold text-inherit cursor-pointer hover:text-primary">
               E-commerce example
             </p>
           </NextLink>
@@ -63,7 +59,7 @@ export default function NavBar() {
           <ThemeToggle />
         </NavbarItem>
         <NavbarItem>
-          <Badge content={totalItems > 0 ? totalItems : null} color="primary">
+          <Badge content={totalItems > 0 ? totalItems : null} color="primary" hidden={totalItems === 0}>
             <Button
               variant="bordered"
               className="min-w-0 min-h-0"

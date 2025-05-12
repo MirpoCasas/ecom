@@ -1,10 +1,15 @@
 "use client";
 
 import { Product, ProductsResponse } from "@/types/products";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
-import { useParams, useRouter, usePathname } from "next/navigation";
+import {
+  useParams,
+  useRouter,
+  usePathname,
+  useSearchParams,
+} from "next/navigation";
 import {
   Button,
   Dropdown,
@@ -20,26 +25,21 @@ import ItemCard from "@/components/features/Items/ItemCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-type Params = {
-  category: string;
-  search: string;
-};
-
 export default function AllPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useParams<Params>();
+  const searchParams = useSearchParams();
 
-  // Get search params
-  const currentCategory = searchParams.category
-  const currentSearch = searchParams.search
+  // Get search params from URL
+  const currentCategory = searchParams.get("category") || "";
+  const currentSearch = searchParams.get("search") || "";
 
   // Local state for user inputs
-  const [searchInput, setSearchInput] = useState<string>(currentSearch);
-  const [debouncedSearch] = useDebounce<string>(searchInput, 500);
+  const [searchInput, setSearchInput] = useState(currentSearch);
+  const [debouncedSearch] = useDebounce(searchInput, 500);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Set<string>>(
-    new Set([])
+    currentCategory ? new Set([currentCategory]) : new Set([])
   );
 
   // Fetch products with SWR using our API functions
@@ -69,38 +69,39 @@ export default function AllPage() {
     }
   }, [categoriesData]);
 
-  // Update URL when search or category changes
+  // Create a memoized function to update URL
+  const updateUrl = useCallback(
+    (search: string, category: string) => {
+      const params = new URLSearchParams();
+
+      if (search) {
+        params.set("search", search);
+      }
+
+      if (category) {
+        params.set("category", category);
+      }
+
+      const newUrl = `${pathname}${
+        params.toString() ? `?${params.toString()}` : ""
+      }`;
+      router.push(newUrl, { scroll: false });
+    },
+    [pathname, router]
+  );
+
+  // Effect for handling search param changes
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (debouncedSearch) {
-      params.set("search", debouncedSearch);
-    } else {
-      params.delete("search");
+    // Only update URL when debounced search changes and it's different from current URL
+    if (debouncedSearch !== currentSearch) {
+      updateUrl(debouncedSearch, currentCategory);
     }
-
-    const newUrl = `${pathname}?${params.toString()}`;
-    router.push(newUrl, { scroll: false });
-  }, [debouncedSearch, pathname, router, searchParams]);
+  }, [debouncedSearch, currentSearch, currentCategory, updateUrl]);
 
   // Handle category change
   const handleCategoryChange = (category: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (category) {
-      params.set("category", category);
-    } else {
-      params.delete("category");
-    }
-
-    // Reset search when changing category
-    if (searchInput) {
-      setSearchInput("");
-      params.delete("search");
-    }
-
-    const newUrl = `${pathname}?${params.toString()}`;
-    router.push(newUrl, { scroll: false });
+    setSelectedCategory(new Set([category]));
+    updateUrl(searchInput, category);
   };
 
   return (
@@ -118,26 +119,26 @@ export default function AllPage() {
         <Dropdown>
           <DropdownTrigger>
             <Button variant="bordered" className="capitalize" color="primary">
-              {selectedCategory.size > 0
+              {selectedCategory.size > 0 &&
+              Array.from(selectedCategory)[0] !== ""
                 ? `${Array.from(selectedCategory).join(", ")}`
                 : "Select Category"}
               <FontAwesomeIcon icon={faChevronDown} />
             </Button>
           </DropdownTrigger>
           <DropdownMenu
-            selectedKeys={selectedCategory}
-            onSelectionChange={(keys) =>
-              setSelectedCategory(keys as Set<string>)
-            }
+            selectedKeys={selectedCategory ? selectedCategory : new Set([])}
+            onSelectionChange={(keys) => {
+              if (Array.from(keys)[0]) {
+                handleCategoryChange(Array.from(keys)[0].toString());
+              } else {
+                handleCategoryChange("");
+              }
+            }}
             selectionMode="single"
           >
             {categories?.map((category) => (
-              <DropdownItem
-                key={category.slug}
-                onClick={() => handleCategoryChange(category.slug)}
-              >
-                {category.name}
-              </DropdownItem>
+              <DropdownItem key={category.slug}>{category.name}</DropdownItem>
             ))}
           </DropdownMenu>
         </Dropdown>
@@ -169,7 +170,7 @@ export default function AllPage() {
       )}
 
       {/* Products grid using ItemCard component */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
         {data?.products?.map((product: Product) => (
           <div key={product.id}>
             <ItemCard product={product} />

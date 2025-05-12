@@ -1,8 +1,11 @@
 import { Button } from "@heroui/react";
 import Link from "next/link";
 
-export default function CheckoutSummary(props: { totalPrice: number }) {
-  const { totalPrice } = props;
+export default function CartSummary(props: {
+  totalPrice: number;
+  hideButtons?: boolean;
+}) {
+  const { totalPrice, hideButtons } = props;
   return (
     <div className="w-full lg:w-96 flex-shrink-0">
       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 sticky top-24">
@@ -29,17 +32,21 @@ export default function CheckoutSummary(props: { totalPrice: number }) {
           </div>
         </div>
 
-        <Link href="/checkout">
-          <Button color="primary" className="w-full mt-6">
-            Proceed to Checkout
-          </Button>
-        </Link>
+        {!hideButtons && (
+          <>
+            <Link href="/checkout">
+              <Button color="primary" className="w-full mt-6">
+                Proceed to Checkout
+              </Button>
+            </Link>
 
-        <Link href="/all">
-          <Button variant="ghost" className="w-full mt-3">
-            Continue Shopping
-          </Button>
-        </Link>
+            <Link href="/all">
+              <Button variant="ghost" className="w-full mt-3">
+                Continue Shopping
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

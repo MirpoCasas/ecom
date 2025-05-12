@@ -40,7 +40,7 @@ export default function ItemCarouselle() {
     <div className="relative mx-3 px-10">
       <button
         onClick={scrollLeft}
-        className="absolute w-10 h-10 left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 p-2 rounded-full shadow-md"
+        className="absolute cursor-pointer w-10 h-10 left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 p-2 rounded-full shadow-md"
         aria-label="Scroll left"
       >
         <FontAwesomeIcon icon={faChevronLeft} />
@@ -61,7 +61,7 @@ export default function ItemCarouselle() {
 
       <button
         onClick={scrollRight}
-        className="absolute w-10 h-10 right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 p-2 rounded-full shadow-md"
+        className="absolute cursor-pointer w-10 h-10 right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 p-2 rounded-full shadow-md"
         aria-label="Scroll right"
       >
         <FontAwesomeIcon icon={faChevronRight} />

@@ -11,11 +11,6 @@ export default function Home() {
     () => fetch("https://dummyjson.com/products").then((res) => res.json())
   );
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data]);
   return (
     <section className="bg-background">
       <div>
