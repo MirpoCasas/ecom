@@ -1,11 +1,10 @@
 "use client";
 
 import { Product, ProductsResponse } from "@/types/products";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import useSWR from "swr";
 import { useDebounce } from "use-debounce";
 import {
-  useParams,
   useRouter,
   usePathname,
   useSearchParams,
@@ -26,6 +25,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 export default function AllPage() {
+  return (
+    <Suspense fallback={<AllPageLoading />}>
+      <AllPageContent />
+    </Suspense>
+  );
+}
+
+// Loading fallback component
+function AllPageLoading() {
+  return (
+    <div className="mx-auto px-4 py-8">
+      <h2 className="text-3xl font-bold mb-6">All Products</h2>
+      <div className="flex justify-center items-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    </div>
+  );
+}
+
+// Main content component that uses useSearchParams
+function AllPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

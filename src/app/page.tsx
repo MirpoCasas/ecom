@@ -1,15 +1,6 @@
-"use client";
-
 import HomeCarouselle from "@/components/layout/HomeCarouselle";
-import { ProductsResponse } from "@/types/products";
-import { useEffect } from "react";
-import useSWR from "swr";
 
 export default function Home() {
-  const { data } = useSWR<ProductsResponse>(
-    "https://dummyjson.com/products",
-    () => fetch("https://dummyjson.com/products").then((res) => res.json())
-  );
 
   return (
     <section className="bg-background">

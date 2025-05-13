@@ -14,7 +14,7 @@ import {
   NavbarMenuToggle,
   Badge,
 } from "@heroui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "../ui/ThemeToggle";
 import { useCartStore } from "@/store/cartStore";

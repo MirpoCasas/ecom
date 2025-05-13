@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef } from "react";
 import useSWR from "swr";
 import ItemCard from "./ItemCard";
